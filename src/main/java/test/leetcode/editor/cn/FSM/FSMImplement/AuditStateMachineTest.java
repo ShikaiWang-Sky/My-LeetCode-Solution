@@ -30,7 +30,6 @@ public class AuditStateMachineTest {
      */
     @Test
     public void testDeclareAllStates() throws Exception {
-//TODO: Test goes here...
         StateMachine sm = new AuditStateMachine();
         State state = sm.execute(AuditStateMachine.StateCodeContents.PENDING, new Event(AuditStateMachine.EventCodeContents.PASS));
     }
@@ -40,7 +39,6 @@ public class AuditStateMachineTest {
      */
     @Test
     public void testDoExecuteEvent() throws Exception {
-//TODO: Test goes here... 
     }
 
 } 
