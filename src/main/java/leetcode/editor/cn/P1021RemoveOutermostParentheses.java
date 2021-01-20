@@ -49,9 +49,6 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayList;
-import java.util.List;
-
 //Java：删除最外层的括号
 public class P1021RemoveOutermostParentheses {
     public static void main(String[] args) {
@@ -62,31 +59,32 @@ public class P1021RemoveOutermostParentheses {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public String removeOuterParentheses(String S) {
+            StringBuilder result = new StringBuilder();
+            // 直接用数组取代栈
+            // 栈顶索引
+            int count = 0;
             int len = S.length();
-            // 定义容器存储原语子串
-            List<String> list = new ArrayList<>();
-            // 定义左括号, 右括号计数器
-            int left = 0, right = 0, lastOpr = 0;
-            // 遍历字符串, 读取到括号时对应计数器自增
-            for (int i = 0; i < len; i++) {
-                char c = S.charAt(i);
-                if (c == '(') {
-                    left++;
-                } else if (c == ')') {
-                    right++;
-                }
-                // 检查是否到达某个原语结尾，截取原语子串添加到容器
-                if (left == right) {
-                    list.add(S.substring(lastOpr, i + 1));
-                    lastOpr = i + 1;
+
+            // 遍历字符串
+            char[] s = S.toCharArray();
+            for (char ch : s) {
+                if (ch == '(') {
+                    // '(' 之前有数据, 当前必属原语
+                    if (count > 0) {
+                        // 直接拼接
+                        result.append(ch);
+                    }
+                    count++;
+                } else {
+                    // 出栈
+                    count--;
+                    // ')' 出栈后有数据, 出栈元素必属原语
+                    if (count > 0) {
+                        result.append(ch);
+                    }
                 }
             }
-            // 遍历容器中的原语子串，删除最外层后合并成新串
-            StringBuilder sb = new StringBuilder();
-            for (String s : list) {
-                sb.append(s.substring(1, s.length() - 1));
-            }
-            return sb.toString();
+            return  result.toString();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
