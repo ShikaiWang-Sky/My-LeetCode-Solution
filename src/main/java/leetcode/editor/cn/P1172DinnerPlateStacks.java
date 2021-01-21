@@ -79,16 +79,24 @@ import java.util.List;
 //Java：餐盘栈
 public class P1172DinnerPlateStacks {
     public static void main(String[] args) {
-        DinnerPlates solution = new P1172DinnerPlateStacks().new DinnerPlates(5);
+        DinnerPlates solution = new P1172DinnerPlateStacks().new DinnerPlates(1);
         // TO TEST
+        solution.push(1);
+        solution.push(2);
+        solution.push(3);
+        System.out.println(solution.popAtStack(0));
+        System.out.println(solution.pop());
+        System.out.println(solution.pop());
+        solution.push(4);
+        solution.push(5);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class DinnerPlates {
         int capacity;
-        // 左边未满栈的下标
+        // 左边第一个未满栈的下标
         int left;
-        // 右边非空栈的下标
+        // 右边第一个非空栈的下标
         int right;
         public List<Deque<Integer>> stacks;
 
@@ -97,21 +105,80 @@ public class P1172DinnerPlateStacks {
             this.capacity = capacity;
             this.right = 0;
             this.left = 0;
-            stacks.add(new ArrayDeque<Integer>());
+            stacks.add(new ArrayDeque<>());
         }
 
+        /**
+        直接在left所在位置进行入栈，push后需要遍历查找下一个未满栈
+        细节问题：
+            1. 需要对list进行扩容操作
+            2. 需要更新right位置（right宽松，不保证一定是非空，可以在第一个非空的右边）
+        */
         public void push(int val) {
-
+            if (left < 0) {
+                left = 0;
+            }
+            Deque<Integer> stack = stacks.get(left);
+            stack.push(val);
+            // 当前栈满, 则找下一个非满栈
+            while (left < stacks.size() && stacks.get(left).size() == capacity) {
+                left++;
+            }
+            // 所有的栈都满了, 要扩容, 增加一个栈
+            if (left >= stacks.size()) {
+                stacks.add(new ArrayDeque<>());
+            }
+            // 更新right的位置(left指向的位置一定是非空栈)
+            //  right < left的情况只发生在left左侧都非空的情况下
+            if (right < left) {
+                right = left;
+            }
         }
 
+        /**
+        以right为起点，往左遍历查找第一个非空栈
+        细节问题：
+            移除数据后，需要判断所在位置是不是比left更小，如果满足则需要更新left
+            移除数据后，需要判断所在位置是不是空栈，空栈则将right左移一个（right宽松，不保证一定是非空，可以在第一个非空的右边）
+        */
         public int pop() {
-
+            // 从right开始寻找第一个非空栈
+            for (int i = right; i >= 0; i--) {
+                Deque<Integer> stack = stacks.get(i);
+                if (!stack.isEmpty()) {
+                    right = i;
+                    int res = stack.pop();
+                    // 如果移除的位置在left左边，需要将left修复到right位置
+                    if (left > right) {
+                        left = right;
+                    }
+                    if (stack.isEmpty()) {
+                        right--;
+                    }
+                    return res;
+                }
+            }
             return -1;
         }
 
+        /**
+        移除数据后，需要判断所在位置是不是比left更小，如果满足则需要更新left
+        */
         public int popAtStack(int index) {
-
-            return -1;
+            // 越界检查
+            if (index > stacks.size() - 1) {
+                return -1;
+            }
+            Deque<Integer> stack = stacks.get(index);
+            if (!stack.isEmpty()) {
+                // 在left左边出栈, 更新left
+                if (left > index) {
+                    left = index;
+                }
+                return stack.pop();
+            } else {
+                return -1;
+            }
         }
     }
 
