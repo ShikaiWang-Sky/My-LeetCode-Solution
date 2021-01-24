@@ -166,6 +166,7 @@ public class P1206DesignSkiplist {
             boolean exist = false;
             Node n = head;
             // 查找
+
             while (n != null) {
                 // 获取该指定数据节点的前一个节点
                 while (n.right != null && n.right.val < num) {
