@@ -50,7 +50,7 @@
 
 package leetcode.editor.cn;
 
-import org.w3c.dom.Node;
+import java.util.Random;
 
 //Java：设计跳表
 public class P1206DesignSkiplist {
@@ -68,11 +68,14 @@ public class P1206DesignSkiplist {
         Node head;
         // 当前层级, 即 head 节点所在的最高层数
         int levels;
+        // 原链表长度(不算头结点)
+        int length;
 
         // 初始化默认值
         public Skiplist() {
             head = HEAD;
             levels = 1;
+            length = 1;
         }
 
         // 节点类
@@ -134,11 +137,15 @@ public class P1206DesignSkiplist {
         public void add(int num) {
             // 1. 定位插入位置: 原链表中 >= num 的最小节点前
             Node node = head;
+            Node[] nodes = new Node[levels];
+            int i = 0;
             // node == null, 到达原链表(原链表的 down 都是 null), 循环结束, 找到了插入节点
             while (node != null) {
                 while (node.right != null && node.right.val < num) {
                     node = node.right;
                 }
+                // 向下之前的节点就是每一层可能插入新节点的索引, 我们记录下来
+                nodes[i++] = node;
                 // 下一层是 null, 到达了原链表, 跳出循环
                 if (node.down == null) {
                     break;
@@ -148,10 +155,51 @@ public class P1206DesignSkiplist {
             }
 
             // 2. 插入新节点
+            // nodes中最后一个元素 (上面i++, 到了原链表处存完然后还要自增, 这样i位置上就是个空指针, 因此这里要--i)
+            node = nodes[--i];
             Node newNode = new Node(num, node.right, null);
             node.right = newNode;
-            // 3. 根据扔硬币决定是否生成索引
+            length++;
 
+            // 3. 根据扔硬币决定是否生成索引 => i在上面已经自减过了, 不会指向空位置了
+            addIndicesByCoinFlip(newNode, nodes, i);
+        }
+
+        /**
+         * 根据扔硬币决定是否生成索引
+         *
+         * @param target  要插入的节点
+         * @param nodes   可能插入节点的位置
+         * @param indices 现有的最大的层数
+         */
+        private void addIndicesByCoinFlip(Node target, Node[] nodes, int indices) {
+            // down指针指向的元素
+            Node downNode = target;
+            // 1. 抛硬币, 在现有的层级范围内建立索引
+            Random random = new Random();
+            // 0 或者 1, 50%概率
+            int coins = random.nextInt(2);
+            while (coins == 1 && levels < (length >> 6)) {
+                if (indices > 0) {
+                    // 数组的倒数第二个元素, level 2
+                    Node prev = nodes[--indices];
+                    Node newIndex = new Node(target.val, prev.right, downNode);
+                    prev.right = newIndex;
+                    downNode = newIndex;
+                    coins = random.nextInt(2);
+                } else {
+                    // 2. 抛硬币, 决定是否建立一层超出跳表层数的索引层
+                    /*indices为0时执行最后一次, 在最后才抛硬币, 对当时的层实际没有影响
+                      我们可以直接在这里用到上面的抛硬币的结果*/
+                    // 新建索引节点和头结点
+                    Node newIndex = new Node(target.val, null, downNode);
+                    Node newHead = new Node(HEAD_VALUE, newIndex, head);
+                    // head指针上移
+                    head = newHead;
+                    // 跳表的层数加 1
+                    levels++;
+                }
+            }
         }
 
         /**
@@ -159,6 +207,7 @@ public class P1206DesignSkiplist {
          * 1.获取该指定数据节点的前一个节点
          * 2.与当前层链表断开
          * 3.下移，删除每一层
+         *
          * @param num
          * @return
          */
@@ -184,6 +233,9 @@ public class P1206DesignSkiplist {
                 }
                 // 删除下一层
                 n = n.down;
+            }
+            if (exist) {
+                length--;
             }
             return exist;
         }
