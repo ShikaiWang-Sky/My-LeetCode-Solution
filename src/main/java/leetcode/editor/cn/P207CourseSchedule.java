@@ -63,7 +63,7 @@ public class P207CourseSchedule {
                 adj.add(new ArrayList<>());
             }
             for (int[] prerequisite : prerequisites) {
-                adj.get(prerequisite[1]).add(prerequisite[0]);
+                adj.get(prerequisite[0]).add(prerequisite[1]);
             }
             int[] indegree = new int[numCourses];
             for (ArrayList<Integer> parent : adj) {
