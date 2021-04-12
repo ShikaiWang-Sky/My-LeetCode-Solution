@@ -62,7 +62,7 @@ public class P787CheapestFlightsWithinKStops {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-            // 价格矩阵
+            // 价格矩阵, graph[src][dst] = cost
             int[][] graph = new int[n][n];
             for (int[] flight : flights) {
                 graph[flight[0]][flight[1]] = flight[2];
@@ -70,15 +70,18 @@ public class P787CheapestFlightsWithinKStops {
 
             Map<Integer, Integer> best = new HashMap<>();
 
+            // 最小堆, 话费最小的在堆顶
             PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
             pq.offer(new int[]{0, 0, src});
 
             while (!pq.isEmpty()) {
+                // info {价格, 中转站的数量, 源节点}
                 int[] info = pq.poll();
                 int cost = info[0];
                 int k = info[1];
                 int place = info[2];
 
+                // 剪枝
                 if (k > K + 1 || cost > best.getOrDefault(k * 1000 + place, Integer.MAX_VALUE)) {
                     continue;
                 }
@@ -86,7 +89,9 @@ public class P787CheapestFlightsWithinKStops {
                     return cost;
                 }
 
+                // 遍历邻接点
                 for (int nei = 0; nei < n; ++nei) {
+                    // 如果花费大于0 (不是环)
                     if (graph[place][nei] > 0) {
                         int newcost = cost + graph[place][nei];
                         if (newcost < best.getOrDefault((k + 1) * 1000 + nei, Integer.MAX_VALUE)) {
