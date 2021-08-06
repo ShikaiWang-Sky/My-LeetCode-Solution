@@ -67,58 +67,23 @@ public class P53MaximumSubarray {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int maxSubArray(int[] nums) {
-            return getInfo(nums, 0, nums.length - 1).mSum;
-        }
+            int length = nums.length;
+            if (length == 0)
+                return 0;
 
-        public Status getInfo(int[] a, int l, int r) {
-            // 长度为1, 四个值都相等
-            if (l == r) {
-                return new Status(a[l], a[l], a[l], a[l]);
+            int[] dp = new int[length];
+            dp[0] = nums[0];
+            for (int i = 1; i < length; i++) {
+                dp[i] = Math.max(dp[i - 1] + nums[i], nums[i]);
             }
-            // 中间索引
-            int m = (l + r) >> 1;
-            // 左子区间
-            Status lSub = getInfo(a, l, m);
-            // 右子区间
-            Status rSub = getInfo(a, m + 1, r);
-            // 计算子区间回溯
-            return pushUp(lSub, rSub);
-        }
-
-        /**
-         * 根据左右子区间计算新的Status信息
-         * @param lSub 左子区间
-         * @param rSub 右子区间
-         * @return 合成的大的区间的Status信息
-         */
-        public Status pushUp (Status lSub, Status rSub) {
-            int iSum = lSub.iSum + rSub.iSum;
-            // 新的以l端点的最大连续子串的和, 为左子区间的lSum和右子区间的lSum+左子区间的iSum(为了保证从l开始连续)的最大值
-            int lSum = Math.max(lSub.lSum, lSub.iSum + rSub.lSum);
-            // 与上面类似
-            int rSum = Math.max(rSub.rSum, lSub.rSum + rSub.iSum);
-            // mSum的三种情况, 左子区间mSum,右子区间的mSum, 跨越左右子区间, 即左子区间以r为端点和右子区间以l为端点之和(保证连续)
-            int mSum = Math.max(Math.max(lSub.mSum, rSub.mSum), lSub.rSum + rSub.lSum);
-            return new Status(lSum, rSum, iSum, mSum);
-        }
-
-        class Status {
-            public int lSum, rSum, iSum, mSum;
-
-            /**
-             * Status的构造器
-             * @param lSum 以l(左边界)为端点的最大连续子串和
-             * @param rSum 以r(右边界)为端点的最大连续子串和
-             * @param iSum 所有元素的和
-             * @param mSum 最大连续子串的和
-             */
-            public Status(int lSum, int rSum, int iSum, int mSum) {
-                this.lSum = lSum;
-                this.rSum = rSum;
-                this.iSum = iSum;
-                this.mSum = mSum;
+            int res = Integer.MIN_VALUE;
+            for (int i : dp) {
+                res = Math.max(i, res);
             }
+
+            return res;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 

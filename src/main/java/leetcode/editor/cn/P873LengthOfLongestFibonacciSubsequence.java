@@ -67,6 +67,9 @@ public class P873LengthOfLongestFibonacciSubsequence {
             // (i, j)结尾的对的斐波那契子序列长度
             // i * N + j = longest(FibSubSeq), (i, j)对应位置编码为 i * N + j, 这样就可以用一维数组存储pair的状态
             // 设计hash key 保证全局唯一并且方便计算即可, 这里设计为 i * N + j
+            // 验证唯一     存的时候: value = i * 常量 + j
+            //            取的时候: i = value / 常量, j = value % 常量
+            // 由于坐标唯一, 所以哈希值不会冲突
             Map<Integer, Integer> longest = new HashMap<>();
             int res = 0;
 

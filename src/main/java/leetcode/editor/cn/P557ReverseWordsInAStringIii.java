@@ -34,24 +34,24 @@ public class P557ReverseWordsInAStringIii {
     class Solution {
         public String reverseWords(String s) {
             int index = 0, length = s.length();
-            StringBuilder sb = new StringBuilder();
             Deque<Character> stack = new ArrayDeque<>();
+            StringBuilder stringBuilder = new StringBuilder();
             while (index < length) {
-                char c = s.charAt(index++);
-                if (c != ' ') {
-                    stack.push(c);
+                char current = s.charAt(index);
+                if (current != ' ') {
+                    stack.push(current);
                 } else {
                     while (!stack.isEmpty()) {
-                        sb.append(stack.pop());
+                        stringBuilder.append(stack.pop());
                     }
-                    sb.append(' ');
+                    stringBuilder.append(' ');
                 }
-
+                index++;
             }
             while (!stack.isEmpty()) {
-                sb.append(stack.pop());
+                stringBuilder.append(stack.pop());
             }
-            return sb.toString();
+            return stringBuilder.toString();
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

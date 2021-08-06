@@ -37,24 +37,26 @@ public class P704BinarySearch {
     public static void main(String[] args) {
         Solution solution = new P704BinarySearch().new Solution();
         // TO TEST
+        solution.search(new int[] {-1,0,3,5,9,12}, 9);
     }
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public int search(int[] nums, int target) {
-            int start = 0, end = nums.length - 1;
-            return search(start, end, nums, target);
+            return search(nums, target, 0, nums.length - 1);
         }
 
-        public int search(int start, int end, int[] nums, int target) {
+        public int search(int[] nums, int target, int start, int end) {
             if (start <= end) {
-                int mid = (start + end) / 2;
-                if (nums[mid] == target) {
-                    return mid;
-                } else if (nums[mid] > target) {
-                    return search(start, mid - 1, nums, target);
-                } else if (nums[mid] < target) {
-                    return search(mid + 1, end, nums, target);
+                int middle = start + (end - start) / 2;
+                if (nums[middle] == target) {
+                    return middle;
+                }
+                if (nums[middle] > target) {
+                    return search(nums, target, start, middle - 1);
+                }
+                if (nums[middle] < target) {
+                    return search(nums, target, middle + 1, end);
                 }
             }
             return -1;
