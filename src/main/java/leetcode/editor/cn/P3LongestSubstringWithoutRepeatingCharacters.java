@@ -47,6 +47,9 @@
 
 package leetcode.editor.cn;
 
+import java.util.HashSet;
+import java.util.Set;
+
 //Java：无重复字符的最长子串
 public class P3LongestSubstringWithoutRepeatingCharacters {
     public static void main(String[] args) {
@@ -57,50 +60,22 @@ public class P3LongestSubstringWithoutRepeatingCharacters {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        /**
-         * 哈希算法
-         * 根据给定的字符计算出一个 int 类型的哈希值
-         *
-         * @param key 输入的字符
-         * @return 哈希值
-         */
-        int hash(char key) {
-            return key;
-        }
-
-        /**
-         * 最优解: 哈希表 + 双指针
-         *
-         * @param s 字符串
-         * @return 最长不重复子串的长度
-         */
         public int lengthOfLongestSubstring(String s) {
-            int len;
-            if (s == null || (len = s.length()) == 0) {
+            int length = s.length();
+            if (length == 0)
                 return 0;
-            }
-            // 最长不重复子串的长度, 左指针索引, 右指针索引
-            int res = 0, left = 0, right = 0;
-            // 1. 定义哈希表
-            char[] chs = new char[128];
-            // 2. 遍历字符串的所有字符
-            while (right < len) {
-                // 右指针字符
+            int left = 0, right = 0, res = 0;
+            Set<Character> set = new HashSet<>();
+            while (right < length) {
                 char rightChar = s.charAt(right);
-                // hash算法 => 按位与相当于 hash(rightChar) % chs.length
-                char c = chs[hash(rightChar) & (chs.length - 1)];
-                if (rightChar != c) {
-                    // 未重复出现
+                if (!set.contains(rightChar)) {
                     right++;
-                    // 将不重复字符记录到哈希表中
-                    chs[hash(rightChar) & (chs.length - 1)] = rightChar;
-                    // 记录子串长度, 并计算最大值
-                    int size = right - left;
-                    res = Math.max(res, size);
+                    set.add(rightChar);
+                    res = Math.max(res, right - left);
                 } else {
-                    // 重复出现
-                    char leftChar = s.charAt(left++);
-                    chs[hash(leftChar) & (chs.length - 1)] = '\u0000';
+                    char leftChar = s.charAt(left);
+                    left++;
+                    set.remove(leftChar);
                 }
             }
             return res;
