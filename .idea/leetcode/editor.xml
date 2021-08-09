@@ -115,6 +115,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P116PopulatingNextRightPointersInEachNode.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P116PopulatingNextRightPointersInEachNode.java" />
+              <option name="questionId" value="116" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P1172DinnerPlateStacks.java">
           <value>
             <LeetcodeEditor>
@@ -627,6 +635,14 @@
             </LeetcodeEditor>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P617MergeTwoBinaryTrees.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P617MergeTwoBinaryTrees.java" />
+              <option name="questionId" value="617" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P65ValidNumber.java">
           <value>
             <LeetcodeEditor>
@@ -688,6 +704,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P704BinarySearch.java" />
               <option name="questionId" value="792" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P733FloodFill.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P733FloodFill.java" />
+              <option name="questionId" value="733" />
             </LeetcodeEditor>
           </value>
         </entry>
@@ -760,6 +784,14 @@
             <LeetcodeEditor>
               <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P83RemoveDuplicatesFromSortedList.java" />
               <option name="questionId" value="83" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P84LargestRectangleInHistogram.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/src/main/java/leetcode/editor/cn/P84LargestRectangleInHistogram.java" />
+              <option name="questionId" value="84" />
             </LeetcodeEditor>
           </value>
         </entry>

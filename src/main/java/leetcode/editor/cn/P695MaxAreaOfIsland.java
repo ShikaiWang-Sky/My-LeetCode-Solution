@@ -48,26 +48,25 @@ public class P695MaxAreaOfIsland {
         private int maxCol;
 
         public int maxAreaOfIsland(int[][] grid) {
-            if (grid == null || grid.length <= 0 || grid[0].length <= 0) {
+            if (grid == null || grid.length == 0 || grid[0].length == 0)
                 return 0;
-            }
 
             maxRow = grid.length;
             maxCol = grid[0].length;
-            int maxArea = 0;
+
+            int res = Integer.MIN_VALUE;
 
             for (int i = 0; i < maxRow; i++) {
                 for (int j = 0; j < maxCol; j++) {
-                    maxArea = Math.max(maxArea, dfs(grid, i, j));
+                    res = Math.max(res, dfs(grid, i, j));
                 }
             }
 
-            return maxArea;
-
+            return res;
         }
 
         private int dfs(int[][] grid, int currentRow, int currentCol) {
-            if (currentRow < 0 || currentCol < 0 || currentRow >= maxRow || currentCol >= maxCol
+            if (currentRow < 0 || currentRow >= maxRow || currentCol < 0 || currentCol >= maxCol
                     || grid[currentRow][currentCol] == 0) {
                 return 0;
             }
@@ -81,6 +80,7 @@ public class P695MaxAreaOfIsland {
 
             return currentArea;
         }
+
     }
 //leetcode submit region end(Prohibit modification and deletion)
 
